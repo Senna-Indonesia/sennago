@@ -20,12 +20,10 @@ type Product struct {
 }
 
 func (p *Product) Validate(request Product) {
-	err := validation.ValidateStruct(&request,
+	if err := validation.ValidateStruct(&request,
 		validation.Field(&request.Name, validation.Required),
 		validation.Field(&request.Stock, validation.Required, validation.Min(1)),
-	)
-
-	if err != nil {
+	); err != nil {
 		panic(handler.ValidationError{
 			Message: err.Error(),
 		})
@@ -37,9 +35,11 @@ func (p *Product) Create(request Product) error {
 		Name:  request.Name,
 		Stock: request.Stock,
 	}).Insert()
+
 	if err != nil {
 		handler.PanicIfNeeded(err)
 	}
+
 	return nil
 }
 func Update() {
