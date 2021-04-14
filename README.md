@@ -10,5 +10,9 @@ SennaGo is API framework with expressive, elegant syntax. We believe development
 - Database : PostgreSQL
 - Hot Reload :Air
 
+## Security Vulnerabilities
+
+If you discover a security vulnerability within SennaGo, please send an e-mail to Dev Senna via [dev@senna.co.id](mailto:dev@senna.co.id). All security vulnerabilities will be promptly addressed.
+
 ## License
 SennaGo is licensed under the AGPL v3 license.
