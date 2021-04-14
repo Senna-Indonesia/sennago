@@ -13,6 +13,7 @@ import (
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
+	"github.com/gofiber/fiber/v2/middleware/etag"
 	"github.com/gofiber/fiber/v2/middleware/recover"
 )
 
@@ -25,6 +26,7 @@ func main() {
 	app := fiber.New(config.App())
 	app.Use(recover.New())
 	app.Use(cors.New())
+	app.Use(etag.New())
 
 	//Initial Route
 	routes.Routes(app)

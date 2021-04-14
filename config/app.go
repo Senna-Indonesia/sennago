@@ -16,6 +16,5 @@ func App() fiber.Config {
 	return fiber.Config{
 		ErrorHandler: handler.ErrorHandler,
 		//using etag from cache
-		ETag: true,
 	}
 }
