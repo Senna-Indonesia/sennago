@@ -19,15 +19,7 @@ type Product struct {
 	Stock int    `json:"stock"`
 }
 
-type ProductRequest struct {
-	Name  string `json:"name" form:"name"`
-	Stock int    `json:"stock" form:"stock"`
-}
-
-type ProdutModel struct {
-}
-
-func (p *ProdutModel) Validate(request ProductRequest) {
+func (p *Product) Validate(request Product) {
 	err := validation.ValidateStruct(&request,
 		validation.Field(&request.Name, validation.Required),
 		validation.Field(&request.Stock, validation.Required, validation.Min(1)),
@@ -40,7 +32,7 @@ func (p *ProdutModel) Validate(request ProductRequest) {
 	}
 }
 
-func (p *ProdutModel) Create(request ProductRequest) error {
+func (p *Product) Create(request Product) error {
 	_, err := config.Db().Model(&Product{
 		Name:  request.Name,
 		Stock: request.Stock,

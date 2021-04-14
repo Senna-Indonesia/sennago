@@ -20,14 +20,13 @@ func (controller *ProductController) Route(route fiber.Router) {
 }
 
 func (controller *ProductController) Insert(c *fiber.Ctx) error {
-	var request models.ProductRequest
-	var model models.ProdutModel
-	err := c.BodyParser(&request)
+	var p models.Product
+	err := c.BodyParser(&p)
 
 	handler.PanicIfNeeded(err)
 
-	model.Validate(request)
-	response := model.Create(request)
+	p.Validate(p)
+	response := p.Create(p)
 
 	return c.JSON(handler.Response{
 		Code:    200,
