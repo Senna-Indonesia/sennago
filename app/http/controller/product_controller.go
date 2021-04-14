@@ -13,15 +13,18 @@ import (
 )
 
 type ProductController struct {
+	p models.Product
 }
 
 func (controller *ProductController) Route(route fiber.Router) {
-	route.Post("/products/create", controller.Insert)
+	route.Post("/product/create", controller.Insert)
+	route.Get("/product/all", controller.List)
+
 }
 
 func (controller *ProductController) Insert(c *fiber.Ctx) error {
-	var p models.Product
-
+	// var p models.Product
+	p := controller.p
 	if err := c.BodyParser(&p); err != nil {
 		handler.PanicIfNeeded(err)
 	}
@@ -35,4 +38,18 @@ func (controller *ProductController) Insert(c *fiber.Ctx) error {
 		Message: "OK",
 		Data:    response,
 	})
+}
+
+func (controller *ProductController) List(c *fiber.Ctx) error {
+	p := controller.p
+
+	response, err := p.List()
+	handler.PanicIfNeeded(err)
+
+	return c.JSON(handler.Response{
+		Code:    200,
+		Message: "OK",
+		Data:    response,
+	})
+
 }

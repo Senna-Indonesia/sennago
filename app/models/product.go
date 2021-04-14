@@ -53,6 +53,12 @@ func GetOne() {
 
 }
 
-func List() {
+func (p *Product) List() ([]Product, error) {
+	var data []Product
+	err := config.Db().Model(&data).Select()
+	if err != nil {
+		handler.PanicIfNeeded(err)
+	}
+	return data, nil
 
 }
