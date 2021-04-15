@@ -20,6 +20,8 @@ func (controller *ProductController) Route(route fiber.Router) {
 	route.Post("/product/create", controller.Insert)
 	route.Get("/product/all", controller.List)
 	route.Get("/product/one/:id", controller.One)
+	route.Delete("/product/delete/:id", controller.Delete)
+	route.Post("/product/update/:id", controller.Update)
 
 }
 
@@ -62,6 +64,42 @@ func (controller *ProductController) One(c *fiber.Ctx) error {
 
 	response, errRes := p.GetOne(id)
 	handler.PanicIfNeeded(errRes)
+
+	return c.JSON(handler.Response{
+		Code:    200,
+		Message: "OK",
+		Data:    response,
+	})
+
+}
+
+func (controller *ProductController) Delete(c *fiber.Ctx) error {
+	p := controller.p
+	id, err := c.ParamsInt("id")
+	handler.PanicIfNeeded(err)
+
+	response := p.Delete(id)
+
+	return c.JSON(handler.Response{
+		Code:    200,
+		Message: "OK",
+		Data:    response,
+	})
+
+}
+
+func (controller *ProductController) Update(c *fiber.Ctx) error {
+	p := controller.p
+	id, err := c.ParamsInt("id")
+	handler.PanicIfNeeded(err)
+
+	if err := c.BodyParser(&p); err != nil {
+		handler.PanicIfNeeded(err)
+	}
+
+	p.Validate(p)
+
+	response := p.Update(id, p)
 
 	return c.JSON(handler.Response{
 		Code:    200,

@@ -42,11 +42,24 @@ func (*Product) Create(request Product) error {
 
 	return nil
 }
-func Update() {
+func (*Product) Update(id int, request Product) error {
+	data := &Product{
+		Id:    id,
+		Name:  request.Name,
+		Stock: request.Stock}
+	_, err := config.Db().Model(data).WherePK().Update()
+	handler.PanicIfNeeded(err)
+
+	return nil
 
 }
-func Delete() {
-
+func (*Product) Delete(id int) error {
+	var data Product
+	_, err := config.Db().Model(&data).Where("id = ?", id).Delete()
+	if err != nil {
+		handler.PanicIfNeeded(err)
+	}
+	return nil
 }
 
 func (*Product) GetOne(id int) (Product, error) {
