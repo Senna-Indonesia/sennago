@@ -19,7 +19,7 @@ type Product struct {
 	Stock int    `json:"stock"`
 }
 
-func (p *Product) Validate(request Product) {
+func (*Product) Validate(request Product) {
 	if err := validation.ValidateStruct(&request,
 		validation.Field(&request.Name, validation.Required),
 		validation.Field(&request.Stock, validation.Required, validation.Min(1)),
@@ -30,7 +30,7 @@ func (p *Product) Validate(request Product) {
 	}
 }
 
-func (p *Product) Create(request Product) error {
+func (*Product) Create(request Product) error {
 	_, err := config.Db().Model(&Product{
 		Name:  request.Name,
 		Stock: request.Stock,
@@ -49,11 +49,17 @@ func Delete() {
 
 }
 
-func GetOne() {
+func (*Product) GetOne(id int) (Product, error) {
+	var data Product
+	err := config.Db().Model(&data).Where("id=?", id).Select()
+	if err != nil {
+		handler.PanicIfNeeded(err)
+	}
+	return data, nil
 
 }
 
-func (p *Product) List() ([]Product, error) {
+func (*Product) List() ([]Product, error) {
 	var data []Product
 	err := config.Db().Model(&data).Select()
 	if err != nil {

@@ -19,6 +19,7 @@ type ProductController struct {
 func (controller *ProductController) Route(route fiber.Router) {
 	route.Post("/product/create", controller.Insert)
 	route.Get("/product/all", controller.List)
+	route.Get("/product/one/:id", controller.One)
 
 }
 
@@ -45,6 +46,22 @@ func (controller *ProductController) List(c *fiber.Ctx) error {
 
 	response, err := p.List()
 	handler.PanicIfNeeded(err)
+
+	return c.JSON(handler.Response{
+		Code:    200,
+		Message: "OK",
+		Data:    response,
+	})
+
+}
+
+func (controller *ProductController) One(c *fiber.Ctx) error {
+	p := controller.p
+	id, err := c.ParamsInt("id")
+	handler.PanicIfNeeded(err)
+
+	response, errRes := p.GetOne(id)
+	handler.PanicIfNeeded(errRes)
 
 	return c.JSON(handler.Response{
 		Code:    200,
