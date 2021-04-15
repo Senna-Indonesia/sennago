@@ -64,8 +64,7 @@ func (*Product) Delete(id int) error {
 
 func (*Product) GetOne(id int) (Product, error) {
 	var data Product
-	err := config.Db().Model(&data).Where("id=?", id).Select()
-	if err != nil {
+	if err := config.Db().Model(&data).Where("id=?", id).Select(); err != nil {
 		handler.PanicIfNeeded(err)
 	}
 	return data, nil
@@ -74,8 +73,7 @@ func (*Product) GetOne(id int) (Product, error) {
 
 func (*Product) List() ([]Product, error) {
 	var data []Product
-	err := config.Db().Model(&data).Select()
-	if err != nil {
+	if err := config.Db().Model(&data).Select(); err != nil {
 		handler.PanicIfNeeded(err)
 	}
 	return data, nil
